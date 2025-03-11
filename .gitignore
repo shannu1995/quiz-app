@@ -1,0 +1,38 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+.env
+
+# Virtual environment
+venv/
+.venv/
+
+# Flask specific
+instance/
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# IDE and Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# PyCharm
+*.iml
+*.ipr
+*.iws
+/.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
