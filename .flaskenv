@@ -1,1 +1,3 @@
 FLASK_APP=quiz-starter.py
+DB_PATH=countries_data.db
+CAPITALS_TABLE_NAME=capitals
