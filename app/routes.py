@@ -5,6 +5,7 @@ import requests
 from datetime import datetime
 from io import StringIO
 import sqlite3
+import os
 from config import Config
 
 @app.route('/')
@@ -13,6 +14,18 @@ def index():
     title = "Georgraphy Quiz App"
     return render_template('index.html', title=title)
 
+@app.route('/view-existing-data', methods=['GET'])
+def view_existing_data():
+    if not os.path.exists(Config.DB_PATH):
+        return render_template('no-data.html', data="No data available. Database file does not exist.")
+    try:
+        with sqlite3.connect(Config.DB_PATH) as conn:
+            capitals_quiz_data = pd.read_sql_query(f"SELECT * FROM {Config.CAPITALS_TABLE_NAME}", conn)
+            last_updated = capitals_quiz_data["Last Updated"].iloc[0]
+        return render_template('view-existing-data.html', data=capitals_quiz_data.to_html(), date=last_updated)
+    except Exception as e:
+        return render_template('no-data.html', data="No data available. Unable to connect to the database. " + e)
+    
 @app.route('/refresh-data', methods=['GET'])
 def refresh_table_data():
     popular_pages_url = "https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countries/Popular_pages"
@@ -27,5 +40,5 @@ def refresh_table_data():
     capitals_quiz_data_relevant_only = capitals_quiz_data[['Country/Territory', 'City/Town', "Continent", "Views"]].copy()
     capitals_quiz_data_relevant_only["Last Updated"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     with sqlite3.connect(Config.DB_PATH) as conn:
-        capitals_quiz_data_relevant_only.to_sql(Config.DB_PATH, conn, if_exists='replace', index=False)
+        capitals_quiz_data_relevant_only.to_sql(Config.CAPITALS_TABLE_NAME, conn, if_exists='replace', index=False)
     return render_template('refresh-data.html', data=capitals_quiz_data_relevant_only.to_html())
