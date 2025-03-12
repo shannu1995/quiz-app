@@ -1,6 +1,8 @@
 from app import app
+from flask import render_template, url_for
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return "Hello, World!"
+    title = "Georgraphy Quiz App"
+    return render_template('index.html', title=title)
