@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>List of Countries and their capitals</h2>
+<h3>This is what you will be quizzed on.</h3>
+<p>The larger the number of Views, the easier it is considered to be.</p>
+{{ data | safe}}
+{% endblock %}
