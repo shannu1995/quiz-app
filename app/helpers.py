@@ -9,3 +9,8 @@ def return_existing_data():
             return True
     except Exception as e:
         return False
+
+def get_capitals_quiz_data():
+    with sqlite3.connect(Config.DB_PATH) as conn:
+        capitals_quiz_data = pd.read_sql_query(f"SELECT * FROM {Config.CAPITALS_TABLE_NAME}", conn)
+    return capitals_quiz_data

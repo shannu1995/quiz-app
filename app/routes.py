@@ -7,7 +7,7 @@ from io import StringIO
 import sqlite3
 import os
 from config import Config
-from app.helpers import return_existing_data
+from app.helpers import return_existing_data, get_capitals_quiz_data
 
 @app.route('/')
 @app.route('/index')
@@ -45,4 +45,14 @@ def refresh_table_data():
 @app.route('/capitals-quiz', methods=['GET'])
 def capitals_quiz():
     difficulty = request.args.get('difficulty', "random")
+    capitals_quiz_data = get_capitals_quiz_data()
+    if difficulty == "random":
+        quiz_data = capitals_quiz_data.sample(5)
+    elif difficulty == "easy":
+        quiz_data = capitals_quiz_data.head(5)
+    elif difficulty == "hard":
+        capitals_quiz_data_difficulty_filter = capitals_quiz_data.tail(50)
+        quiz_data = capitals_quiz_data_difficulty_filter.sample(5)
+    countries = []
+    scrambled_cities = []
     return render_template('capitals-quiz.html', difficulty=difficulty)
