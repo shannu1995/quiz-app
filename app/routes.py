@@ -7,6 +7,7 @@ from io import StringIO
 import sqlite3
 import os
 from config import Config
+import random
 from app.helpers import return_existing_data, get_capitals_quiz_data
 
 @app.route('/')
@@ -42,9 +43,10 @@ def refresh_table_data():
         capitals_quiz_data_relevant_only.to_sql(Config.CAPITALS_TABLE_NAME, conn, if_exists='replace', index=False)
     return render_template('refresh-data.html', data=capitals_quiz_data_relevant_only.to_html())
 
-@app.route('/capitals-quiz', methods=['GET'])
+@app.route('/capitals-quiz', methods=['GET', 'POST'])
 def capitals_quiz():
-    difficulty = request.args.get('difficulty', "random")
+    difficulty = request.form.get('difficulty', "random")
+    print(f"Difficulty: {difficulty}")
     capitals_quiz_data = get_capitals_quiz_data()
     if difficulty == "random":
         quiz_data = capitals_quiz_data.sample(5)
@@ -53,6 +55,7 @@ def capitals_quiz():
     elif difficulty == "hard":
         capitals_quiz_data_difficulty_filter = capitals_quiz_data.tail(50)
         quiz_data = capitals_quiz_data_difficulty_filter.sample(5)
-    countries = []
-    scrambled_cities = []
-    return render_template('capitals-quiz.html', difficulty=difficulty)
+    countries = list(quiz_data['Country/Territory'])
+    correct_cities = tuple(zip(quiz_data["City/Town"], quiz_data["Country/Territory"]))
+    scrambled_cities = random.sample(correct_cities, len(correct_cities))
+    return render_template('capitals-quiz.html', difficulty=difficulty, countries=countries, scrambled_cities=scrambled_cities)
