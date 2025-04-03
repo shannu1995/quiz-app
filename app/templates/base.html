@@ -3,6 +3,12 @@
     <head>
         <title>{{title}}</title>
         <a href="{{url_for('index')}}">Home</a>
+        <style>
+            .container { display: flex; gap: 30px; }
+            .column { width: 200px; border: 2px solid #4CAF50; padding: 10px; }
+            .draggable { padding: 8px; margin-bottom: 5px; background-color: #2196F3; color: #fff; cursor: grab; }
+            .droppable { border: 2px dashed #FF5722; padding: 8px; margin-bottom: 5px; }
+        </style>
     </head>
     <body>
         {% block content %}{% endblock %}
