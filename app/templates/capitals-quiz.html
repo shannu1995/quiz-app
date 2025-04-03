@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h3>Match Countries with Their Cities</h3>
+<h4>Difficulty Selected {{difficulty}}</h4>
     <div class="container">
         <div id="countries" class="column">
             {% for country in countries %}
@@ -13,4 +14,5 @@
             {% endfor %}
         </div>
     </div>
+    <script src="{{ url_for('static', filename='js/drag-drop.js') }}"></script>
 {% endblock %}
