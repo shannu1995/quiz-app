@@ -59,3 +59,7 @@ def capitals_quiz():
     correct_cities = tuple(zip(quiz_data["City/Town"], quiz_data["Country/Territory"]))
     scrambled_cities = random.sample(correct_cities, len(correct_cities))
     return render_template('capitals-quiz.html', difficulty=difficulty, countries=countries, scrambled_cities=scrambled_cities)
+@app.route('/check_matches', methods=['POST'])
+def check_matches():
+    print("check_matches called")
+    return render_template('check_matches.html', data=request.json)
