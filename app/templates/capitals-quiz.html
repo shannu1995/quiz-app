@@ -2,7 +2,7 @@
 {% block content %}
 <h3>Match Countries with Their Cities</h3>
 <h4>Difficulty Selected {{difficulty}}</h4>
-    <div class="container">
+    <div class="question_vs_answer">
         <div id="countries" class="column">
             {% for country in countries %}
                 <div class="draggable" draggable="true" id="{{ country}}">{{ country }}</div>
@@ -14,6 +14,7 @@
             {% endfor %}
         </div>
     </div>
+    </br>
     <button onclick="submitResults()">Submit</button>
     <script src="{{ url_for('static', filename='js/drag-drop.js') }}"></script>
 {% endblock %}

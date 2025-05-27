@@ -64,16 +64,12 @@ def capitals_quiz():
 @app.route('/submit_results', methods=['POST'])
 def submit_results():
     user_answers = request.get_json()
-    print(user_answers)
     session['user_answers'] = json.dumps(user_answers)
     return jsonify({'redirect_url': '/check_matches'})
 @app.route('/check_matches')
 def check_matches():
-    print("check_matches called")
     user_matches = json.loads(session.get('user_answers', '{}'))
     correct_cities = json.loads(session.get('correct_cities', '[]'))
-    print("user_matches:", user_matches)
-    print("correct_cities:", correct_cities)
     inverted_matches = {
         country.strip().lower(): capital.strip()
         for capital, country in user_matches.items()
@@ -88,5 +84,4 @@ def check_matches():
             'correct_city': correct_city,
             'is_correct': user_city == correct_city
         })
-    print("Results:", results)
     return render_template('check_matches.html', data=results)
