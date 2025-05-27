@@ -10,7 +10,7 @@
         </div>
         <div id="cities" class="column">
             {% for city, country in scrambled_cities %}
-                <div class="droppable" data-match="{{ country|lower }}">{{ city }}</div>
+                <div class="droppable" data-match="{{ city|lower }}">{{ city }}</div>
             {% endfor %}
         </div>
     </div>

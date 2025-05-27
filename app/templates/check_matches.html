@@ -1,3 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
+<table>
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>Your Answer</th>
+                <th>Correct Capital</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr class="{{ 'correct' if row.is_correct else 'incorrect' }}">
+                <td>{{ row.country }}</td>
+                <td>{{ row.user_city or 'No answer' }}</td>
+                <td>{{ row.correct_city }}</td>
+                <td>
+                    {% if row.is_correct %}
+                        ✓ Correct
+                    {% else %}
+                        ✗ Wrong
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

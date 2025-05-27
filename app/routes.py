@@ -1,5 +1,6 @@
 from app import app
-from flask import render_template, request
+from flask import render_template, request, session, jsonify
+import json
 import pandas as pd
 import requests
 from datetime import datetime
@@ -57,9 +58,27 @@ def capitals_quiz():
         quiz_data = capitals_quiz_data_difficulty_filter.sample(5)
     countries = list(quiz_data['Country/Territory'])
     correct_cities = tuple(zip(quiz_data["City/Town"], quiz_data["Country/Territory"]))
+    session['correct_cities'] = json.dumps(correct_cities)
     scrambled_cities = random.sample(correct_cities, len(correct_cities))
     return render_template('capitals-quiz.html', difficulty=difficulty, countries=countries, scrambled_cities=scrambled_cities)
-@app.route('/check_matches', methods=['POST'])
+@app.route('/submit_results', methods=['POST'])
+def submit_results():
+    user_answers = request.get_json()
+    print(user_answers)
+    session['user_answers'] = json.dumps(user_answers)
+    return jsonify({'redirect_url': '/check_matches'})
+@app.route('/check_matches')
 def check_matches():
     print("check_matches called")
-    return render_template('check_matches.html', data=request.json)
+    user_matches = json.loads(session.get('user_answers', '{}'))
+    correct_cities = json.loads(session.get('correct_cities', '[]'))
+    results = []
+    for country, correct_city in correct_cities:
+        user_city = user_matches.get(country)
+        results.append({
+            'country': country,
+            'user_city': user_city,
+            'correct_city': correct_city,
+            'is_correct': user_city == correct_city
+        })
+    return render_template('check_matches.html', data=results)
