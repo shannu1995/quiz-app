@@ -5,12 +5,12 @@
     <div class="container">
         <div id="countries" class="column">
             {% for country in countries %}
-                <div class="draggable" draggable="true" id="{{ country|lower }}">{{ country }}</div>
+                <div class="draggable" draggable="true" id="{{ country}}">{{ country }}</div>
             {% endfor %}
         </div>
         <div id="cities" class="column">
             {% for city, country in scrambled_cities %}
-                <div class="droppable" data-match="{{ city|lower }}">{{ city }}</div>
+                <div class="droppable" data-match="{{ city}}">{{ city }}</div>
             {% endfor %}
         </div>
     </div>
