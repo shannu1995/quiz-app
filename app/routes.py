@@ -46,21 +46,33 @@ def refresh_table_data():
 
 @app.route('/capitals-quiz', methods=['GET', 'POST'])
 def capitals_quiz():
-    difficulty = request.form.get('difficulty', "random")
-    print(f"Difficulty: {difficulty}")
+    difficulty = request.form.get('difficulty')
+    continent = request.form.get('continent')
     capitals_quiz_data = get_capitals_quiz_data()
-    if difficulty == "random":
-        quiz_data = capitals_quiz_data.sample(5)
-    elif difficulty == "easy":
-        quiz_data = capitals_quiz_data.head(5)
-    elif difficulty == "hard":
-        capitals_quiz_data_difficulty_filter = capitals_quiz_data.tail(50)
-        quiz_data = capitals_quiz_data_difficulty_filter.sample(5)
-    countries = list(quiz_data['Country/Territory'])
-    correct_cities = tuple(zip(quiz_data["City/Town"], quiz_data["Country/Territory"]))
-    session['correct_cities'] = json.dumps(correct_cities)
-    scrambled_cities = random.sample(correct_cities, len(correct_cities))
-    return render_template('capitals-quiz.html', difficulty=difficulty, countries=countries, scrambled_cities=scrambled_cities)
+    if difficulty:
+        print(f"Difficulty: {difficulty}")
+        filter_type = "difficulty"
+        if difficulty == "random":
+            quiz_data = capitals_quiz_data.sample(5)
+        elif difficulty == "easy":
+            quiz_data = capitals_quiz_data.head(5)
+        elif difficulty == "hard":
+            capitals_quiz_data_difficulty_filter = capitals_quiz_data.tail(50)
+            quiz_data = capitals_quiz_data_difficulty_filter.sample(5)
+        countries = list(quiz_data['Country/Territory'])
+        correct_cities = tuple(zip(quiz_data["City/Town"], quiz_data["Country/Territory"]))
+        session['correct_cities'] = json.dumps(correct_cities)
+        scrambled_cities = random.sample(correct_cities, len(correct_cities))
+        return render_template('capitals-quiz.html', filter_value=difficulty, filter_type=filter_type, countries=countries, scrambled_cities=scrambled_cities)
+    else:
+        filter_type = "continent"
+        quiz_data = capitals_quiz_data[capitals_quiz_data['Continent'] == continent].copy()
+        quiz_data = quiz_data.sample(10) if len(quiz_data) > 10 else quiz_data
+        countries = list(quiz_data['Country/Territory'])
+        correct_cities = tuple(zip(quiz_data["City/Town"], quiz_data["Country/Territory"]))
+        session['correct_cities'] = json.dumps(correct_cities)
+        scrambled_cities = random.sample(correct_cities, len(correct_cities))
+        return render_template('capitals-quiz.html', filter_value=continent, filter_type=filter_type, countries=countries, scrambled_cities=scrambled_cities)
 @app.route('/submit_results', methods=['POST'])
 def submit_results():
     user_answers = request.get_json()

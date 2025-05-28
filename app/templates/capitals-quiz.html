@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <h3>Match Countries with Their Cities</h3>
-<h4>Difficulty Selected {{difficulty}}</h4>
+<h4>Chose {{filter_type}}</h4>
+<h4>Selected {{filter_value}}</h4>
     <div class="question_vs_answer">
         <div id="countries" class="column">
             {% for country in countries %}
@@ -15,6 +16,6 @@
         </div>
     </div>
     </br>
-    <button onclick="submitResults()">Submit</button>
+    <button class="btn btn-primary" onclick="submitResults()">Submit</button>
     <script src="{{ url_for('static', filename='js/drag-drop.js') }}"></script>
 {% endblock %}

@@ -9,4 +9,13 @@
     <button class="btn btn-primary" type="submit" name="difficulty" value="hard">Hard</button>
     <button class="btn btn-primary" type="submit" name="difficulty" value="random">Random</button>
 </form>
+<h5>Choose Quiz On Continent</h5>
+<form action="{{ url_for('capitals_quiz') }}" method="post">
+        <button class="btn btn-primary" type="submit" name="continent" value="Asia">Asia</button>
+        <button class="btn btn-primary" type="submit" name="continent" value="Africa">Africa</button>
+        <button class="btn btn-primary" type="submit" name="continent" value="Europe">Europe</button>
+        <button class="btn btn-primary" type="submit" name="continent" value="North America">North America</button>
+        <button class="btn btn-primary" type="submit" name="continent" value="South America">South America</button>
+        <button class="btn btn-primary" type="submit" name="continent" value="Oceania">Oceania</button>
+</form>
 {% endblock %}
