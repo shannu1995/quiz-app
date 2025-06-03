@@ -11,6 +11,9 @@ from config import Config
 import random
 from app.helpers import return_existing_data, get_capitals_quiz_data, get_connection
 
+@app.route('/env')
+def show_env():
+    return os.environ.get('DATABASE_URL', 'DATABASE_URL not set')
 @app.route('/')
 @app.route('/index')
 def index():
