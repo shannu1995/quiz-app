@@ -10,10 +10,19 @@ import os
 from config import Config
 import random
 from app.helpers import return_existing_data, get_capitals_quiz_data, get_connection
+import psycopg2
+from urllib.parse import urlparse
+
 
 @app.route('/env')
 def show_env():
-    return os.environ.get('DATABASE_URL', 'DATABASE_URL not set')
+    db = os.environ.get('DATABASE_URL', 'DATABASE_URL not set')
+    if db.__contains__('postgres'):
+        conn = psycopg2.connect(db)
+        conn = psycopg2.connect(db)
+        conn.close()
+        return "Connected to PostgreSQL database"
+    return db
 @app.route('/')
 @app.route('/index')
 def index():
