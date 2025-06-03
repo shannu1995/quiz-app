@@ -19,7 +19,6 @@ def show_env():
     db = os.environ.get('DATABASE_URL', 'DATABASE_URL not set')
     if db.__contains__('postgres'):
         conn = psycopg2.connect(db)
-        conn = psycopg2.connect(db)
         conn.close()
         return "Connected to PostgreSQL database"
     return db
