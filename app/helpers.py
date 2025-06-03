@@ -6,7 +6,7 @@ import psycopg2
 
 def get_connection():
     database_url = os.environ.get("DATABASE_URL")
-    if database_url:
+    if database_url.__contains__('postgres'):
         import urllib.parse as urlparse
         url = urlparse.urlparse(database_url)
         conn = psycopg2.connect(
