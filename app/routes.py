@@ -9,7 +9,7 @@ import sqlite3
 import os
 from config import Config
 import random
-from app.helpers import return_existing_data, get_capitals_quiz_data
+from app.helpers import return_existing_data, get_capitals_quiz_data, get_connection
 
 @app.route('/')
 @app.route('/index')
@@ -20,7 +20,7 @@ def index():
 @app.route('/view-existing-data', methods=['GET'])
 def view_existing_data():
     if return_existing_data():
-        with sqlite3.connect(Config.DB_PATH) as conn:
+        with get_connection() as conn:
             capitals_quiz_data = pd.read_sql_query(f"SELECT * FROM {Config.CAPITALS_TABLE_NAME}", conn)
             last_updated = capitals_quiz_data["Last Updated"].iloc[0]
         return render_template('view-existing-data.html', data=capitals_quiz_data.to_html(), date=last_updated)
