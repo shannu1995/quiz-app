@@ -27,3 +27,33 @@ function submitResults() {
         }
     });
 }
+
+let scrollSpeed = 10;
+let autoScrollInterval = null;
+
+document.addEventListener('dragover', (e) => {
+    const threshold = 100;
+    const viewportHeight = window.innerHeight;
+
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+    }
+
+    if (e.clientY < threshold) {
+        autoScrollInterval = setInterval(() => {
+            window.scrollBy(0, -scrollSpeed);
+        }, 16);
+    } else if (e.clientY > viewportHeight - threshold) {
+        autoScrollInterval = setInterval(() => {
+            window.scrollBy(0, scrollSpeed);
+        }, 16);
+    }
+});
+
+document.addEventListener('dragend', () => {
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+    }
+});
