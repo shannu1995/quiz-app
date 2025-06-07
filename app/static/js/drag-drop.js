@@ -28,6 +28,10 @@ function submitResults() {
     });
 }
 
+function resetQuiz(){
+    location.reload();
+};
+
 let scrollSpeed = 10;
 let autoScrollInterval = null;
 
