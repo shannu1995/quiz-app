@@ -8,7 +8,7 @@ from io import StringIO
 import os
 from config import Config
 import random
-from app.helpers import return_existing_data, get_capitals_quiz_data, get_connection
+from app.helpers import return_existing_data, get_capitals_quiz_data, get_connection, get_alchemy_connection
 import psycopg2
 from urllib.parse import urlparse
 

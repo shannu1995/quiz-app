@@ -3,6 +3,7 @@ import pandas as pd
 import os
 from config import Config
 import psycopg2
+from sqlalchemy import create_engine
 
 def get_connection():
     database_url = os.environ.get("DATABASE_URL")
@@ -19,7 +20,13 @@ def get_connection():
         return conn
     else:
         return sqlite3.connect(Config.DB_PATH)
-
+def get_alchemy_connection():
+    database_url = os.environ.get("DATABASE_URL")
+    if database_url:
+        return create_engine(database_url)
+    else:
+        return create_engine(f"sqlite:///{Config.DB_PATH}")
+    
 def return_existing_data():
     try:
         with get_connection() as conn:
