@@ -6,7 +6,7 @@ if "postgres" in db:
     DB_TYPE = "postgres"
     column_names = {
         "country": "country",
-        "city": "city",
+        "city": "capital",
         "continent": "continent",
         "views": "views",
         "last_updated": "last_updated"
