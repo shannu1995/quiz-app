@@ -4,6 +4,7 @@ import os
 from config import Config
 import psycopg2
 from sqlalchemy import create_engine
+from app.db_config import column_names, DB_TYPE
 
 def get_connection():
     database_url = os.environ.get("DATABASE_URL")
@@ -36,6 +37,7 @@ def return_existing_data():
         return False
 
 def get_capitals_quiz_data():
-    with get_connection() as conn:
+    engine = get_alchemy_connection()
+    with engine.connect() as conn:
         capitals_quiz_data = pd.read_sql_query(f"SELECT * FROM {Config.CAPITALS_TABLE_NAME}", conn)
     return capitals_quiz_data

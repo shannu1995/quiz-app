@@ -8,7 +8,7 @@ from io import StringIO
 import os
 from config import Config
 import random
-from app.helpers import return_existing_data, get_capitals_quiz_data, get_connection, get_alchemy_connection
+from app.helpers import get_capitals_quiz_data, get_connection, get_alchemy_connection
 from app.db_config import column_names, DB_TYPE
 import psycopg2
 from urllib.parse import urlparse
@@ -72,17 +72,18 @@ def capitals_quiz():
         elif difficulty == "hard":
             capitals_quiz_data_difficulty_filter = capitals_quiz_data.tail(50)
             quiz_data = capitals_quiz_data_difficulty_filter.sample(5)
-        countries = list(quiz_data['Country/Territory'])
-        correct_cities = tuple(zip(quiz_data["City/Town"], quiz_data["Country/Territory"]))
+        #countries = list(quiz_data['Country/Territory'])
+        countries = list(quiz_data[column_names["country"]])
+        correct_cities = tuple(zip(quiz_data[column_names["city"]], quiz_data[column_names["country"]]))
         session['correct_cities'] = json.dumps(correct_cities)
         scrambled_cities = random.sample(correct_cities, len(correct_cities))
         return render_template('capitals-quiz.html', filter_value=difficulty, filter_type=filter_type, countries=countries, scrambled_cities=scrambled_cities)
     else:
         filter_type = "continent"
-        quiz_data = capitals_quiz_data[capitals_quiz_data['Continent'] == continent].copy()
+        quiz_data = capitals_quiz_data[capitals_quiz_data[column_names["continent"]] == continent].copy()
         quiz_data = quiz_data.sample(10) if len(quiz_data) > 10 else quiz_data
-        countries = list(quiz_data['Country/Territory'])
-        correct_cities = tuple(zip(quiz_data["City/Town"], quiz_data["Country/Territory"]))
+        countries = list(quiz_data[column_names["country"]])
+        correct_cities = tuple(zip(quiz_data[column_names["city"]], quiz_data[column_names["country"]]))
         session['correct_cities'] = json.dumps(correct_cities)
         scrambled_cities = random.sample(correct_cities, len(correct_cities))
         return render_template('capitals-quiz.html', filter_value=continent, filter_type=filter_type, countries=countries, scrambled_cities=scrambled_cities)
