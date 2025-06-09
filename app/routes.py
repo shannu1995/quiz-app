@@ -9,6 +9,7 @@ import os
 from config import Config
 import random
 from app.helpers import return_existing_data, get_capitals_quiz_data, get_connection, get_alchemy_connection
+from app.db_config import column_names, DB_TYPE
 import psycopg2
 from urllib.parse import urlparse
 
@@ -32,9 +33,9 @@ def view_existing_data():
     engine = get_alchemy_connection()
     with engine.connect() as conn:
         capitals_quiz_data = pd.read_sql_query(f"SELECT * FROM {Config.CAPITALS_TABLE_NAME}", conn)
-        col_name = next((col for col in capitals_quiz_data.columns if col.lower().replace(" ", "_") == "last_updated"), None)
-        last_updated = capitals_quiz_data[col_name].iloc[0]
-        return render_template('view-existing-data.html', data=capitals_quiz_data.to_html(), date=last_updated)
+        #col_name = next((col for col in capitals_quiz_data.columns if col.lower().replace(" ", "_") == "last_updated"), None)
+        last_updated = capitals_quiz_data[column_names["last_updated"]].iloc[0]
+        return render_template('view-existing-data.html', data=capitals_quiz_data.to_html(), date=last_updated, database=DB_TYPE)
     
 @app.route('/refresh-data', methods=['GET'])
 def refresh_table_data():
