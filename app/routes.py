@@ -32,10 +32,9 @@ def view_existing_data():
     engine = get_alchemy_connection()
     with engine.connect() as conn:
         capitals_quiz_data = pd.read_sql_query(f"SELECT * FROM {Config.CAPITALS_TABLE_NAME}", conn)
-        last_updated = capitals_quiz_data["Last Updated"].iloc[0]
+        col_name = next((col for col in capitals_quiz_data.columns if col.lower().replace(" ", "_") == "last_updated"), None)
+        last_updated = capitals_quiz_data[col_name].iloc[0]
         return render_template('view-existing-data.html', data=capitals_quiz_data.to_html(), date=last_updated)
-    #else:
-    #    return render_template('no-data.html', data="No data available. Unable to connect to the database. ")
     
 @app.route('/refresh-data', methods=['GET'])
 def refresh_table_data():
