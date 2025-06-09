@@ -11,6 +11,8 @@ document.querySelectorAll('.droppable').forEach(droppable => {
         const draggedId = event.dataTransfer.getData('text');
         matches[droppable.dataset.match] = draggedId;
         droppable.textContent += ` (Selected: ${draggedId})`;
+        const draggedElement = document.getElementById(draggedId);
+        draggedElement.classList.add('dropped');
     });
 });
 
