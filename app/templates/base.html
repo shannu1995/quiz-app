@@ -5,6 +5,8 @@
         <title>{{title}}</title>
         <div class="navbar navbar-fixed-top container">
             <a href="{{url_for('index')}}">Home</a>
+            <a href="{{url_for('view_existing_data')}}">View Existing Data</a>
+            <a href="{{url_for('refresh_table_data')}}">Refresh Database</a>
         </div>
         <style>
             .question_vs_answer { display: flex; gap: 30px; }
@@ -15,7 +17,7 @@
         </style>
     </head>
     <body>
-         <div class="container">
+         <div class="container my-5">
             {% block content %}{% endblock %}
         </div>
     </body>
