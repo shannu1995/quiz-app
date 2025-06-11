@@ -4,7 +4,7 @@ As you can see from the "Beginnings" section, this originally started out as a w
 
 The features of the app are as follows:
 
-The user opens the website, they have either the option to choose a difficulty or choose a continent. After the choice, a quiz is presented where one drags the "country" from the left and drops it over a "city" of choice on the right. The website is [here](http://flask-environment.eba-mk4sbmer.ap-southeast-2.elasticbeanstalk.com/).
+The user opens the website, they have either the option to choose a difficulty or choose a continent. After the choice, a quiz is presented where one drags the "country" from the left and drops it over a "city" of choice on the right. The website is [here](http://www.geography-quiz.net/).
 
 The source of data is two wikipedia pages. These are:
 - https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countries/Popular_pages
