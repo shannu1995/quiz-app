@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{error_message}}</h1>
+    <p>On the webapp, the function to refresh the database is not available to end users.</p>
+    <p>Instead, a lambda function refreshes the data every week.</p>
+    <p>In order to use this feature, please download the project and then install SQLite</p>
+    <p><a href="{{url_for('index')}}">Back to Home Page</a></p>
+{% endblock %}

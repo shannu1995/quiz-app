@@ -53,7 +53,7 @@ def refresh_table_data():
             capitals_quiz_data_relevant_only.to_sql(Config.CAPITALS_TABLE_NAME, conn, if_exists='replace', index=False)
         return render_template('refresh-data.html', data=capitals_quiz_data_relevant_only.to_html())
     else:
-        return render_template('refresh-data.html', data="This feature is not available for PostgreSQL databases. Please use SQLite for this feature.")
+        return render_template('no-refresh-data.html', error_message="This feature is not available for PostgreSQL databases. Please download the project locally and use SQLite for this feature.")
 
 @app.route('/capitals-quiz', methods=['GET', 'POST'])
 def capitals_quiz():
