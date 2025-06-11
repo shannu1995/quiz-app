@@ -24,7 +24,7 @@ def show_env():
 @app.route('/')
 @app.route('/index')
 def index():
-    title = "Georgraphy Quiz App"
+    title = "Geography Quiz App"
     return render_template('index.html', title=title)
 
 @app.route('/view-existing-data', methods=['GET'])
