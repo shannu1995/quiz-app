@@ -63,7 +63,7 @@ document.querySelectorAll('.droppable').forEach(droppable => {
 
 function handleDrop(droppableElement, draggedId) {
     matches[droppableElement.dataset.match] = draggedId;
-    droppableElement.textContent = ` (Selected: ${draggedId})`; // Overwrite previous text
+    droppableElement.textContent += ` (Selected: ${draggedId})`; // Append to previous text
     const draggedElement = document.getElementById(draggedId);
     if (draggedElement) {
         draggedElement.classList.add('dropped');
