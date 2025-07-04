@@ -1,20 +1,77 @@
-const matches = {}
+const matches = {};
+let selectedDraggable = null; // To store the currently selected draggable for click-and-drop
+
 document.querySelectorAll(".draggable").forEach(draggable => {
-    draggable.addEventListener('dragstart', (e) =>{
-        e.dataTransfer.setData('text', draggable.id)
-    })
+    // Desktop drag-and-drop events
+    draggable.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', draggable.id);
+        // For mobile, prevent default touch behavior that might interfere
+        e.stopPropagation();
+    });
+
+    // Click-and-drop functionality
+    draggable.addEventListener('click', () => {
+        if (selectedDraggable) {
+            selectedDraggable.classList.remove('selected');
+        }
+        selectedDraggable = draggable;
+        draggable.classList.add('selected');
+    });
+
+    // Mobile touch events to prevent default browser behavior
+    draggable.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent default touch behavior (like scrolling or opening new tab)
+        e.stopPropagation();
+        if (selectedDraggable) {
+            selectedDraggable.classList.remove('selected');
+        }
+        selectedDraggable = draggable;
+        draggable.classList.add('selected');
+    }, { passive: false }); // Use passive: false to allow preventDefault
 });
+
 document.querySelectorAll('.droppable').forEach(droppable => {
+    // Desktop drag-and-drop events
     droppable.addEventListener('dragover', event => event.preventDefault());
 
     droppable.addEventListener('drop', event => {
-        const draggedId = event.dataTransfer.getData('text');
-        matches[droppable.dataset.match] = draggedId;
-        droppable.textContent += ` (Selected: ${draggedId})`;
-        const draggedElement = document.getElementById(draggedId);
-        draggedElement.classList.add('dropped');
+        event.preventDefault(); // Ensure default is prevented for drop
+        const draggedId = event.dataTransfer.getData('text/plain');
+        handleDrop(droppable, draggedId);
     });
+
+    // Click-and-drop functionality
+    droppable.addEventListener('click', () => {
+        if (selectedDraggable) {
+            handleDrop(droppable, selectedDraggable.id);
+            selectedDraggable.classList.remove('selected');
+            selectedDraggable = null; // Reset selected draggable after drop
+        }
+    });
+
+    // Mobile touch events for droppable
+    droppable.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent default touch behavior
+        e.stopPropagation();
+        if (selectedDraggable) {
+            handleDrop(droppable, selectedDraggable.id);
+            selectedDraggable.classList.remove('selected');
+            selectedDraggable = null; // Reset selected draggable after drop
+        }
+    }, { passive: false });
 });
+
+function handleDrop(droppableElement, draggedId) {
+    matches[droppableElement.dataset.match] = draggedId;
+    droppableElement.textContent = ` (Selected: ${draggedId})`; // Overwrite previous text
+    const draggedElement = document.getElementById(draggedId);
+    if (draggedElement) {
+        draggedElement.classList.add('dropped');
+        // Optionally, move the dragged element visually to the droppable area
+        // This might require more complex DOM manipulation depending on layout
+        // For now, just mark it as dropped.
+    }
+}
 
 function submitResults() {
     fetch('/submit_results', {
@@ -30,10 +87,11 @@ function submitResults() {
     });
 }
 
-function resetQuiz(){
+function resetQuiz() {
     location.reload();
-};
+}
 
+// Auto-scrolling for drag-and-drop (desktop)
 let scrollSpeed = 10;
 let autoScrollInterval = null;
 
@@ -63,3 +121,15 @@ document.addEventListener('dragend', () => {
         autoScrollInterval = null;
     }
 });
+
+// Prevent default touch behaviors globally if not handled by specific elements
+document.addEventListener('touchmove', (e) => {
+    // Only prevent default if not scrolling naturally
+    if (e.touches.length === 1) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+document.addEventListener('touchend', (e) => {
+    e.preventDefault(); // Prevent default tap behavior
+}, { passive: false });
