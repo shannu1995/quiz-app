@@ -31,6 +31,9 @@ document.querySelectorAll(".draggable").forEach(draggable => {
 });
 
 document.querySelectorAll('.droppable').forEach(droppable => {
+    // Store the original text content
+    droppable.dataset.originalText = droppable.textContent;
+
     // Desktop drag-and-drop events
     droppable.addEventListener('dragover', event => event.preventDefault());
 
@@ -63,13 +66,11 @@ document.querySelectorAll('.droppable').forEach(droppable => {
 
 function handleDrop(droppableElement, draggedId) {
     matches[droppableElement.dataset.match] = draggedId;
-    droppableElement.textContent += ` (Selected: ${draggedId})`; // Append to previous text
+    // Reset to original text and append only the latest selected item
+    droppableElement.textContent = `${droppableElement.dataset.originalText} (Selected: ${draggedId})`;
     const draggedElement = document.getElementById(draggedId);
     if (draggedElement) {
         draggedElement.classList.add('dropped');
-        // Optionally, move the dragged element visually to the droppable area
-        // This might require more complex DOM manipulation depending on layout
-        // For now, just mark it as dropped.
     }
 }
 
