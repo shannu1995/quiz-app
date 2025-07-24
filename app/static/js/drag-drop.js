@@ -65,7 +65,16 @@ document.querySelectorAll('.droppable').forEach(droppable => {
 });
 
 function handleDrop(droppableElement, draggedId) {
-    matches[droppableElement.dataset.match] = draggedId;
+    const matchKey = droppableElement.dataset.match;
+    const previousId = matches[matchKey];
+    if (previousId && previousId !== draggedId){
+        const previousElement = document.getElementById(previousId);
+        if (previousElement){
+            previousElement.classList.remove('dropped');
+            previousElement.classList.add('draggable')
+        }
+    }
+    matches[matchKey] = draggedId;
     // Reset to original text and append only the latest selected item
     droppableElement.textContent = `${droppableElement.dataset.originalText} (Selected: ${draggedId})`;
     const draggedElement = document.getElementById(draggedId);
