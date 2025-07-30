@@ -85,8 +85,10 @@ def capitals_quiz():
         session['correct_cities'] = json.dumps(correct_cities)
         scrambled_cities = random.sample(correct_cities, len(correct_cities))
         return render_template('capitals-quiz.html', filter_value=continent, filter_type=filter_type, countries=countries, scrambled_cities=scrambled_cities)
-@app.route('/submit_results', methods=['POST'])
+@app.route('/submit_results', methods=['POST', 'OPTIONS'])
 def submit_results():
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'ok'})
     user_answers = request.get_json()
     session['user_answers'] = json.dumps(user_answers)
     return jsonify({'redirect_url': '/check_matches'})
