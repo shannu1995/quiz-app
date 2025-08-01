@@ -75,7 +75,9 @@ def capitals_quiz():
         correct_cities = tuple(zip(quiz_data[column_names["city"]], quiz_data[column_names["country"]]))
         session['correct_cities'] = json.dumps(correct_cities)
         scrambled_cities = random.sample(correct_cities, len(correct_cities))
-        return render_template('capitals-quiz.html', filter_value=difficulty, filter_type=filter_type, countries=countries, scrambled_cities=scrambled_cities)
+        # Have to send correct_cities for match checking to work in react native app
+        return render_template('capitals-quiz.html', filter_value=difficulty, filter_type=filter_type, countries=countries,
+                                scrambled_cities=scrambled_cities, correct_cities=correct_cities)
     else:
         filter_type = "continent"
         quiz_data = capitals_quiz_data[capitals_quiz_data[column_names["continent"]] == continent].copy()
@@ -84,7 +86,9 @@ def capitals_quiz():
         correct_cities = tuple(zip(quiz_data[column_names["city"]], quiz_data[column_names["country"]]))
         session['correct_cities'] = json.dumps(correct_cities)
         scrambled_cities = random.sample(correct_cities, len(correct_cities))
-        return render_template('capitals-quiz.html', filter_value=continent, filter_type=filter_type, countries=countries, scrambled_cities=scrambled_cities)
+        # Have to send correct_cities for match checking to work in react native app
+        return render_template('capitals-quiz.html', filter_value=continent, filter_type=filter_type, countries=countries,
+                                scrambled_cities=scrambled_cities, correct_cities=correct_cities)
 @app.route('/submit_results', methods=['POST', 'OPTIONS'])
 def submit_results():
     if request.method == 'OPTIONS':

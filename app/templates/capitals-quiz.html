@@ -19,4 +19,7 @@
     <button class="btn btn-primary" onclick="submitResults()" ontouchend="submitResults(event)">Submit</button>
     <button class="btn btn-primary" onclick="resetQuiz()">Reset</button>
     <script src="{{ url_for('static', filename='js/drag-drop.js') }}"></script>
+    <script id="correct_cities" type="application/json">
+        {{ correct_cities | tojson }}
+    </script>
 {% endblock %}
