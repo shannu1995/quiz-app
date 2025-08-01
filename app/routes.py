@@ -92,10 +92,15 @@ def submit_results():
     user_answers = request.get_json()
     session['user_answers'] = json.dumps(user_answers)
     return jsonify({'redirect_url': '/check_matches'})
-@app.route('/check_matches')
+@app.route('/check_matches', methods=['GET', 'POST'])
 def check_matches():
-    user_matches = json.loads(session.get('user_answers', '{}'))
-    correct_cities = json.loads(session.get('correct_cities', '[]'))
+    if request.method == 'GET':
+        user_matches = json.loads(session.get('user_answers', '{}'))
+        correct_cities = json.loads(session.get('correct_cities', '[]'))
+    else:
+        data = request.get_json()
+        user_matches = data.get('user_answers', {})
+        correct_cities = data.get('correct_cities', [])
     inverted_matches = {
         country.strip().lower(): capital.strip()
         for capital, country in user_matches.items()
@@ -110,4 +115,8 @@ def check_matches():
             'correct_city': correct_city,
             'is_correct': user_city == correct_city
         })
-    return render_template('check_matches.html', data=results)
+    if request.method == 'GET':
+        return render_template('check_matches.html', data=results)
+    else:
+        return jsonify(results)
+    
