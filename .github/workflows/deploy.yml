@@ -1,3 +1,4 @@
+# Deployment no longer active as of 2nd January 2026. Infrastructure has been intentionally deleted to save on costs.
 name: Deploy to Elastic Beanstalk
 
 on:
