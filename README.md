@@ -1,3 +1,7 @@
+## UPDATE
+
+In order to save costs, all the AWS infrastructure has been terminated as of 2nd January 2026.The URL mentioned below: http://www.geography-quiz.net will not be accessible from this time onwards until I decide to resurrect this project.
+
 ## Geography Quiz
 
 As you can see from the "Beginnings" section, this originally started out as a web-app equivalent of a desktop app I made using tkinter.
